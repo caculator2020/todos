@@ -2,26 +2,39 @@ import {
   TODO_ADD_ITEM,
   TODO_EDIT_ITEM,
   TODO_DELETE_ITEM,
+  TODO_SERACH_ITEM,
 } from "../constants/todoConstants";
 
-export const addTodoItem = (item) => (dispatch, getState) => {
-  dispatch({
+export const addTodoItem = (title) => {
+  const item = {
+    title,
+    id: new Date().getTime(),
+    done: false,
+  };
+  return {
     type: TODO_ADD_ITEM,
     payload: item,
-  });
-  //localStorage.setItem("todos", JSON.stringify(getState().todoItems));
+  };
 };
-export const deleteTodoItem = (itemId) => (dispatch, getState) => {
-  dispatch({
+export const deleteTodoItem = (itemId) => {
+  return {
     type: TODO_DELETE_ITEM,
     payload: itemId,
-  });
-  //localStorage.setItem("todos", JSON.stringify(getState().todoItems));
+  };
 };
-export const editTodoItem = (item) => (dispatch, getState) => {
-  dispatch({
+export const editTodoItem = (item) => {
+  return {
     type: TODO_EDIT_ITEM,
     payload: item,
-  });
-  // localStorage.setItem("todos", JSON.stringify(getState().todoItems));
+  };
+};
+export const searchTodoItem = (
+  filter = { key: "", status: "all", sortBy: "asc" }
+) => {
+  return {
+    type: TODO_SERACH_ITEM,
+    payload: {
+      filter,
+    },
+  };
 };

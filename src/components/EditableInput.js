@@ -1,61 +1,43 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
-import { deleteTodoItem, editTodoItem } from "../actions/todoActions";
-function EditableInput({ item, deleteItem, editItem }) {
+import { editTodoItem, deleteTodoItem } from "../actions/todoActions";
+function EditableInput({ item }) {
+  //useDispatch
   const dispatch = useDispatch();
+  //useState
   const [isEditing, setIsEditing] = useState(false);
   const [inputField, setInputField] = useState(item.title);
+  const [done, setDone] = useState(item.done);
   const inputRef = useRef();
-  const handleOnchange = (e) => {
-    setInputField(e.target.value);
-    editItem({
-      ...item,
-      title: e.target.value,
-    });
-    dispatch(
-      editTodoItem({
-        ...item,
-        title: e.target.value,
-      })
-    );
-  };
-  const handleEditClick = () => {
-    setIsEditing(true);
-  };
-  const markAsDoneHandler = () => {
-    editItem({
-      ...item,
-      done: !item.done,
-    });
-  };
-  const handleOnblur = () => {
+  //event handlers
+  const onBlurHandler = () => {
     setIsEditing(false);
+    dispatch(editTodoItem({ ...item, title: inputField }));
   };
-  const handleDeleteClick = () => {
-    deleteItem(item.id);
-    console.log("editableInput", item.id);
+  const deleteItemHandler = () => {
     dispatch(deleteTodoItem(item.id));
   };
-  const handleOnsubmit = (e) => {
+  const submitHandler = (e) => {
     e.preventDefault();
     setIsEditing(false);
+    dispatch(editTodoItem({ ...item, title: inputField }));
+  };
+  const markAsDoneHandler = () => {
+    setDone(!done);
+    dispatch(editTodoItem({ ...item, done: !done }));
   };
   const inputForm = (
-    <form onSubmit={handleOnsubmit}>
+    <form onSubmit={submitHandler}>
       <input
         ref={inputRef}
         defaultValue={inputField}
-        onChange={handleOnchange}
-        onBlur={handleOnblur}
+        onChange={(e) => setInputField(e.target.value)}
+        onBlur={onBlurHandler}
         type="text"
       />
     </form>
   );
-  const labelFiled = (
-    <p className={item.done ? "done" : ""} onClick={markAsDoneHandler}>
-      {inputField}
-    </p>
-  );
+  const labelFiled = <p onClick={markAsDoneHandler}>{inputField}</p>;
   useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
@@ -63,12 +45,12 @@ function EditableInput({ item, deleteItem, editItem }) {
   });
   return (
     <div className="editableInput">
-      <div className="editableInput-container">
+      <div className={`editableInput-container ${done ? "done" : ""}`}>
         {isEditing ? inputForm : labelFiled}
-        <div className="editableInput-edit" onClick={handleEditClick}>
+        <div className="editableInput-edit" onClick={() => setIsEditing(true)}>
           <i className="fas fa-edit"></i>
         </div>
-        <div className="editableInput-delete" onClick={handleDeleteClick}>
+        <div className="editableInput-delete" onClick={deleteItemHandler}>
           <i className="fas fa-trash-alt"></i>
         </div>
       </div>

@@ -44,11 +44,10 @@ select {
     }
   }
 }
-.done {
-  text-decoration: line-through;
-}
+
 .editableInput {
   &-container {
+    background-color: #eee;
     display: flex;
     align-items: center;
     max-width: 540px;
@@ -70,6 +69,10 @@ select {
         cursor: pointer;
       }
     }
+  }
+  & .done {
+    background-color: #ccc;
+    text-decoration: line-through;
   }
   &-edit,
   &-delete {
