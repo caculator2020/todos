@@ -25,6 +25,28 @@ const TodoInput = () => {
     setInput(key);
     setFilter({ ...filter, key });
   };
+  const filterHandler = (e) => {
+    const currentFilter = e.target.value;
+    switch (currentFilter) {
+      case "all":
+        setFilter({ ...filter, status: "all" });
+        break;
+      case "doing":
+        setFilter({ ...filter, status: "doing" });
+        break;
+      case "done":
+        setFilter({ ...filter, status: "done" });
+        break;
+      case "asc":
+        setFilter({ ...filter, sortBy: "asc" });
+        break;
+      case "des":
+        setFilter({ ...filter, sortBy: "des" });
+        break;
+      default:
+        break;
+    }
+  };
   useEffect(() => {
     dispatch(searchTodoItem(filter));
   }, [filter]);
@@ -40,19 +62,10 @@ const TodoInput = () => {
           onChange={inputHandler}
         />
         <div className="app-todoStatus">
-          <select
-            onChange={(e) => setFilter({ ...filter, status: e.target.value })}
-            name="todoStatus"
-          >
+          <select onChange={filterHandler} name="todoStatus">
             <option value="all">All</option>
             <option value="doing">Doing</option>
             <option value="done">Done</option>
-          </select>
-
-          <select
-            onChange={(e) => setFilter({ ...filter, sortBy: e.target.value })}
-            name="todoStatus"
-          >
             <option value="asc">A-Z</option>
             <option value="des">Z-A</option>
           </select>
