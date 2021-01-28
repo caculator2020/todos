@@ -37,6 +37,9 @@ select {
   }
   &-todoStatus {
     margin-bottom: 16px;
+    & > div {
+      margin-bottom: 16px;
+    }
     & > select {
       background-color: #fff;
       padding: 6px 12px;
@@ -46,6 +49,7 @@ select {
 }
 
 .editableInput {
+  margin-bottom: 5px;
   &-container {
     background-color: #eee;
     display: flex;

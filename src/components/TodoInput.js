@@ -62,6 +62,11 @@ const TodoInput = () => {
           onChange={inputHandler}
         />
         <div className="app-todoStatus">
+          <div>
+            <strong>Display:</strong>
+            {filter.status} <strong>Sort by:</strong>
+            {filter.sortBy === "asc" ? "A-Z" : "Z-A"}
+          </div>
           <select onChange={filterHandler} name="todoStatus">
             <option value="all">All</option>
             <option value="doing">Doing</option>
