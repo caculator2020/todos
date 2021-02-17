@@ -3,33 +3,20 @@ import {
   TODO_DELETE_ITEM,
   TODO_EDIT_ITEM,
   TODO_SERACH_ITEM,
+  TODO_FETCH_ITEMS,
 } from "../constants/todoConstants";
 export const todoReducer = (state = [], action) => {
   let itemsFromStorage = localStorage.getItem("todos")
     ? JSON.parse(localStorage.getItem("todos"))
     : [];
   switch (action.type) {
+    case TODO_FETCH_ITEMS:
+      return action.payload;
     case TODO_ADD_ITEM:
-      localStorage.setItem(
-        "todos",
-        JSON.stringify([...itemsFromStorage, action.payload])
-      );
       return [...state, action.payload];
     case TODO_DELETE_ITEM:
-      itemsFromStorage = itemsFromStorage.filter(
-        (item) => item.id !== action.payload
-      );
-      localStorage.setItem("todos", JSON.stringify(itemsFromStorage));
       return state.filter((item) => item.id !== action.payload);
     case TODO_EDIT_ITEM:
-      itemsFromStorage = itemsFromStorage.map((item) =>
-        item.id !== action.payload.id ? item : action.payload
-      );
-
-      itemsFromStorage = itemsFromStorage.map((item) =>
-        item.id !== action.payload.id ? item : action.payload
-      );
-      localStorage.setItem("todos", JSON.stringify(itemsFromStorage));
       return state.map((item) =>
         item.id !== action.payload.id ? item : action.payload
       );
