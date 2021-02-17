@@ -44,7 +44,7 @@ export const editTodoItem = (item) => async (dispatch) => {
     const config = {
       "Content-Type": "application-json",
     };
-    const { data } = await axios.put("/todos", item, config);
+    const { data } = await axios.put(`/todos/${item.id}`, item, config);
     dispatch({
       type: TODO_EDIT_ITEM,
       payload: data,
@@ -55,13 +55,19 @@ export const editTodoItem = (item) => async (dispatch) => {
 };
 export const searchTodoItem = (
   filter = { key: "", status: "all", sortBy: "asc" }
-) => {
-  return {
-    type: TODO_SERACH_ITEM,
-    payload: {
-      filter,
-    },
-  };
+) => async (dispatch) => {
+  try {
+    const { data } = await axios.get(`/todos?title_like=${filter.key}`);
+    dispatch({
+      type: TODO_SERACH_ITEM,
+      payload: {
+        filter,
+        data,
+      },
+    });
+  } catch (err) {
+    console.error(err);
+  }
 };
 export const fetchTodoItems = () => async (dispatch) => {
   try {

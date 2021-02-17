@@ -5,16 +5,10 @@ import thunk from "redux-thunk";
 const reducer = combineReducers({
   todoItems: todoReducer,
 });
-const todosFromStorage = localStorage.getItem("todos")
-  ? JSON.parse(localStorage.getItem("todos"))
-  : [];
-const initialState = {
-  todoItems: todosFromStorage,
-};
+
 const middleware = [thunk];
 const store = createStore(
   reducer,
-  initialState,
   composeWithDevTools(applyMiddleware(...middleware))
 );
 

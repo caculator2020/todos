@@ -6,9 +6,6 @@ import {
   TODO_FETCH_ITEMS,
 } from "../constants/todoConstants";
 export const todoReducer = (state = [], action) => {
-  let itemsFromStorage = localStorage.getItem("todos")
-    ? JSON.parse(localStorage.getItem("todos"))
-    : [];
   switch (action.type) {
     case TODO_FETCH_ITEMS:
       return action.payload;
@@ -21,19 +18,9 @@ export const todoReducer = (state = [], action) => {
         item.id !== action.payload.id ? item : action.payload
       );
     case TODO_SERACH_ITEM:
-      const {
-        filter: { key },
-      } = action.payload;
-      const {
-        filter: { status },
-      } = action.payload;
-      const {
-        filter: { sortBy },
-      } = action.payload;
-      //filter by key
-      let filteredItems = itemsFromStorage.filter((item) =>
-        item.title.toLowerCase().includes(key.toLowerCase())
-      );
+      const { status } = action.payload.filter;
+      const { sortBy } = action.payload.filter;
+      let filteredItems = action.payload.data;
       //filter by status
       switch (status) {
         case "done":
