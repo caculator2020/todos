@@ -1,82 +1,44 @@
-import axios from "axios";
 import {
-  TODO_ADD_ITEM,
-  TODO_EDIT_ITEM,
-  TODO_DELETE_ITEM,
-  TODO_SERACH_ITEM,
-  TODO_FETCH_ITEMS,
+  TODO_ADD_ITEM_REQUEST,
+  TODO_EDIT_ITEM_REQUEST,
+  TODO_DELETE_ITEM_REQUEST,
+  TODO_FETCH_ITEMS_REQUEST,
+  TODO_SEARCH_ITEM_REQUEST,
 } from "../constants/todoConstants";
 
-export const addTodoItem = (title) => async (dispatch) => {
-  try {
-    const item = {
-      title,
-      id: new Date().getTime(),
-      done: false,
-    };
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
-    const { data } = await axios.post("/todos", item, config);
-    dispatch({
-      type: TODO_ADD_ITEM,
-      payload: data,
-    });
-  } catch (err) {
-    console.error(err);
-  }
+export const addTodoItem = (title) => {
+  const item = {
+    title,
+    id: new Date().getTime(),
+    done: false,
+  };
+  return {
+    type: TODO_ADD_ITEM_REQUEST,
+    payload: item,
+  };
 };
-export const deleteTodoItem = (itemId) => async (dispatch) => {
-  try {
-    await axios.delete(`/todos/${itemId}`);
-    dispatch({
-      type: TODO_DELETE_ITEM,
-      payload: itemId,
-    });
-  } catch (err) {
-    console.error(err);
-  }
+export const deleteTodoItem = (itemId) => {
+  return {
+    type: TODO_DELETE_ITEM_REQUEST,
+    payload: itemId,
+  };
 };
-export const editTodoItem = (item) => async (dispatch) => {
-  try {
-    const config = {
-      "Content-Type": "application-json",
-    };
-    const { data } = await axios.put(`/todos/${item.id}`, item, config);
-    dispatch({
-      type: TODO_EDIT_ITEM,
-      payload: data,
-    });
-  } catch (err) {
-    console.error(err);
-  }
+export const editTodoItem = (item) => {
+  return {
+    type: TODO_EDIT_ITEM_REQUEST,
+    payload: item,
+  };
 };
 export const searchTodoItem = (
   filter = { key: "", status: "all", sortBy: "asc" }
-) => async (dispatch) => {
-  try {
-    const { data } = await axios.get(`/todos?title_like=${filter.key}`);
-    dispatch({
-      type: TODO_SERACH_ITEM,
-      payload: {
-        filter,
-        data,
-      },
-    });
-  } catch (err) {
-    console.error(err);
-  }
+) => {
+  return {
+    type: TODO_SEARCH_ITEM_REQUEST,
+    payload: {
+      filter,
+    },
+  };
 };
-export const fetchTodoItems = () => async (dispatch) => {
-  try {
-    const { data } = await axios.get("/todos");
-    dispatch({
-      type: TODO_FETCH_ITEMS,
-      payload: data,
-    });
-  } catch (err) {
-    console.error(err);
-  }
+export const fetchTodoItems = () => {
+  return { type: TODO_FETCH_ITEMS_REQUEST };
 };

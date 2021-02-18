@@ -1,23 +1,23 @@
 import {
-  TODO_ADD_ITEM,
-  TODO_DELETE_ITEM,
-  TODO_EDIT_ITEM,
-  TODO_SERACH_ITEM,
-  TODO_FETCH_ITEMS,
+  TODO_FETCH_ITEMS_SUCCESS,
+  TODO_ADD_ITEM_SUCCESS,
+  TODO_DELETE_ITEM_SUCCESS,
+  TODO_EDIT_ITEM_SUCCESS,
+  TODO_SEARCH_ITEM_SUCCESS,
 } from "../constants/todoConstants";
 export const todoReducer = (state = [], action) => {
   switch (action.type) {
-    case TODO_FETCH_ITEMS:
+    case TODO_FETCH_ITEMS_SUCCESS:
       return action.payload;
-    case TODO_ADD_ITEM:
+    case TODO_ADD_ITEM_SUCCESS:
       return [...state, action.payload];
-    case TODO_DELETE_ITEM:
+    case TODO_DELETE_ITEM_SUCCESS:
       return state.filter((item) => item.id !== action.payload);
-    case TODO_EDIT_ITEM:
+    case TODO_EDIT_ITEM_SUCCESS:
       return state.map((item) =>
         item.id !== action.payload.id ? item : action.payload
       );
-    case TODO_SERACH_ITEM:
+    case TODO_SEARCH_ITEM_SUCCESS:
       const { status } = action.payload.filter;
       const { sortBy } = action.payload.filter;
       let filteredItems = action.payload.data;
