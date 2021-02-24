@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { addTodoItem, searchTodoItem } from "../actions/todoActions";
-const TodoInput = () => {
+const TodoInput: React.FC = () => {
   //useDispatch
   const dispatch = useDispatch();
   //useState
@@ -12,20 +12,20 @@ const TodoInput = () => {
     sortBy: "asc",
   });
   //useRef
-  const todoInput = useRef();
+  const todoInput = useRef<HTMLInputElement>(undefined!);
   //EventHandler
-  const onSubmitHandler = (e) => {
+  const onSubmitHandler = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     dispatch(addTodoItem(input));
     todoInput.current.value = "";
     setFilter({ ...filter, key: "" });
   };
-  const inputHandler = (e) => {
+  const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const key = e.target.value;
     setInput(key);
     setFilter({ ...filter, key });
   };
-  const filterHandler = (e) => {
+  const filterHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const currentFilter = e.target.value;
     switch (currentFilter) {
       case "all":

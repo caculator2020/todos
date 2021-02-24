@@ -5,7 +5,16 @@ import {
   TODO_SERACH_ITEM,
   TODO_FETCH_ITEMS,
 } from "../constants/todoConstants";
-export const todoReducer = (state = [], action) => {
+import {
+  AddTodo,
+  EditTodo,
+  DeleteTodo,
+  FetchTodo,
+  SearchTodo,
+  Todo,
+} from "../actions/todoTypes";
+type TodoAction = AddTodo | EditTodo | DeleteTodo | FetchTodo | SearchTodo;
+export const todoReducer = (state: Todo[] = [], action: TodoAction) => {
   switch (action.type) {
     case TODO_FETCH_ITEMS:
       return action.payload;

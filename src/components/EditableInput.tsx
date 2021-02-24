@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { editTodoItem, deleteTodoItem } from "../actions/todoActions";
-function EditableInput({ item }) {
+import { Todo } from "../actions/todoTypes";
+function EditableInput({ item }: { item: Todo }) {
   //useDispatch
   const dispatch = useDispatch();
   //useState
   const [isEditing, setIsEditing] = useState(false);
   const [inputField, setInputField] = useState(item.title);
   const [done, setDone] = useState(item.done);
-  const inputRef = useRef();
+  const inputRef = useRef<HTMLInputElement>(null!);
   //event handlers
   const onBlurHandler = () => {
     setIsEditing(false);
@@ -17,7 +18,7 @@ function EditableInput({ item }) {
   const deleteItemHandler = () => {
     dispatch(deleteTodoItem(item.id));
   };
-  const submitHandler = (e) => {
+  const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsEditing(false);
     dispatch(editTodoItem({ ...item, title: inputField }));

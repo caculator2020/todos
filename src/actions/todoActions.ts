@@ -1,3 +1,4 @@
+import { Dispatch } from "redux";
 import axios from "axios";
 import {
   TODO_ADD_ITEM,
@@ -6,8 +7,18 @@ import {
   TODO_SERACH_ITEM,
   TODO_FETCH_ITEMS,
 } from "../constants/todoConstants";
-
-export const addTodoItem = (title) => async (dispatch) => {
+import {
+  Todo,
+  Filter,
+  AddTodo,
+  DeleteTodo,
+  EditTodo,
+  SearchTodo,
+  FetchTodo,
+} from "./todoTypes";
+export const addTodoItem = (title: string) => async (
+  dispatch: Dispatch<AddTodo>
+) => {
   try {
     const item = {
       title,
@@ -28,7 +39,9 @@ export const addTodoItem = (title) => async (dispatch) => {
     console.error(err);
   }
 };
-export const deleteTodoItem = (itemId) => async (dispatch) => {
+export const deleteTodoItem = (itemId: number) => async (
+  dispatch: Dispatch<DeleteTodo>
+) => {
   try {
     await axios.delete(`/todos/${itemId}`);
     dispatch({
@@ -39,10 +52,14 @@ export const deleteTodoItem = (itemId) => async (dispatch) => {
     console.error(err);
   }
 };
-export const editTodoItem = (item) => async (dispatch) => {
+export const editTodoItem = (item: Todo) => async (
+  dispatch: Dispatch<EditTodo>
+) => {
   try {
     const config = {
-      "Content-Type": "application-json",
+      headers: {
+        "Content-Type": "application/json",
+      },
     };
     const { data } = await axios.put(`/todos/${item.id}`, item, config);
     dispatch({
@@ -54,10 +71,12 @@ export const editTodoItem = (item) => async (dispatch) => {
   }
 };
 export const searchTodoItem = (
-  filter = { key: "", status: "all", sortBy: "asc" }
-) => async (dispatch) => {
+  filter: Filter = { key: "", status: "all", sortBy: "asc" }
+) => async (dispatch: Dispatch<SearchTodo>) => {
   try {
-    const { data } = await axios.get(`/todos?title_like=${filter.key}`);
+    const { data }: { data: Todo[] } = await axios.get(
+      `/todos?title_like=${filter.key}`
+    );
     dispatch({
       type: TODO_SERACH_ITEM,
       payload: {
@@ -69,9 +88,9 @@ export const searchTodoItem = (
     console.error(err);
   }
 };
-export const fetchTodoItems = () => async (dispatch) => {
+export const fetchTodoItems = () => async (dispatch: Dispatch<FetchTodo>) => {
   try {
-    const { data } = await axios.get("/todos");
+    const { data }: { data: Todo[] } = await axios.get("/todos");
     dispatch({
       type: TODO_FETCH_ITEMS,
       payload: data,
